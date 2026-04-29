@@ -13,10 +13,7 @@ def Exit(event):
 win.bind("<Escape>", Exit)
 
 
-def GetIn():
-    global Name
-    global Amount
-    return Name.get(), Amount.get()
+#FRONT-END FUNCTIONS ------------------------------------------
 
 
 def UpdateCurDisplay(newDisplay):
@@ -25,6 +22,20 @@ def UpdateCurDisplay(newDisplay):
     Current = Label(win, text=f"Current: {newDisplay}", highlightthickness=1, highlightbackground="Green", padx=170)
     Current.grid(row=4, column=0, columnspan=2, sticky="ew")
 
+def ErrorStable(error):
+    global Err
+
+    Err = Label(win, text=f"Error: {error}", fg="Red")
+    Err.grid(row=5, column=0, columnspan=10, sticky="ew")
+
+
+
+#BACK-END FUNCTIONS --------------------------------------------
+
+def GetIn():
+    global Name
+    global Amount
+    return Name.get(), Amount.get()
 
 def Cret():
     global Name
@@ -39,7 +50,10 @@ def Cret():
 
 
 def Depo():
+    global Err
     name, amount = GetIn()
+    
+    
 
 
     loc = f"USERS.{name}"
@@ -49,16 +63,31 @@ def Depo():
 
 
 
-    curAmount += int(amount)
+    try:
+        if int(amount) < 0:
+            ErrorStable("Negative numbers are not allowed as a request!")
+        return
 
-    with open(f"USERS/{name}.py", "w") as f:
-        f.write(f"amount = {curAmount}")
+        Err.destroy()
 
-    UpdateCurDisplay(curAmount)
+        curAmount += int(amount)
+        
+        with open(f"USERS/{name}.py", "w") as f:
+            f.write(f"amount = {curAmount}")
+
+        UpdateCurDisplay(curAmount)
+
+    except ValueError:
+        ErrorStable("Needs to be valid number/amount!")
 
 
 def Withdraw():
+    global Err
     name, amount = GetIn()
+
+    if int(amount) < 0:
+        ErrorStable("Negative numbers are not allowed as a request!")
+        return
 
 
     loc = f"USERS.{name}"
@@ -66,19 +95,25 @@ def Withdraw():
     importlib.reload(userAcc)
     curAmount = getattr(userAcc, "amount")
 
-    if (curAmount - int(amount)) >= 0:
-        curAmount -= int(amount)
+    try:
+        Err.destroy()
+
+        if (curAmount - int(amount)) >= 0:
+            curAmount -= int(amount)
+        
+        with open(f"USERS/{name}.py", "w") as f:
+            f.write(f"amount = {curAmount}")
+
+        UpdateCurDisplay(curAmount)
+
+    except ValueError:
+        ErrorStable("Needs to be valid number/amount!")
+
+        
 
 
-    with open(f"USERS/{name}.py", "w") as f:
-        f.write(f"amount = {curAmount}")
 
-    UpdateCurDisplay(curAmount)
-
-
-
-
-
+    
 
 
 
@@ -118,8 +153,7 @@ Wit.grid(row=3, column=1, sticky="ew")
 Current = Label(win, text=f"Current: {currentDisplay}", highlightthickness=1, highlightbackground="Green", padx=170)
 Current.grid(row=4, column=0, columnspan=2, sticky="ew")
 
-
-
+Err = Label(win)
 
 
 
