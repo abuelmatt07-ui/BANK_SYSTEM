@@ -115,44 +115,72 @@ def Withdraw():
     except ValueError:
         ErrorStable("Needs to be valid number/amount!")
 
+
+
+
+
+
+
+
+#PAGES ------------------------------------------------------------------------------------------------------
+
+def Main():
+    global currentDisplay
+    global head
+    global tex1
+    global tex2
+    global Name
+    global Amount
+    global Dep
+    global Wit
+    global Current
+    global Err
+
+    currentDisplay = "None"
+
+    head = Label(win, text="BANK", highlightthickness=1, highlightbackground="grey")
+    # head.grid(row=0, column=0, columnspan=10, sticky="ew")
+
+    tex1 = Label(win, text="Username ⬇️", highlightthickness=1, highlightbackground="grey")
+    # tex1.grid(row=1, column=0, sticky="ew")
+
+    tex2 = Label(win, text="Amount ⬇️", highlightthickness=1, highlightbackground="grey")
+    # tex2.grid(row=1, column=1, sticky="ew")
+
+    Name = Entry(win, highlightthickness=1, highlightbackground="grey")
+    # Name.grid(row=2, column=0, sticky="ew")
+
+    Amount = Entry(win, highlightthickness=1, highlightbackground="grey")
+    # Amount.grid(row=2, column=1, sticky="ew")
+
+    Dep = Button(win, text="Deposit", command=Depo)
+    # Dep.grid(row=3, column=0, sticky="ew")
+
+    Wit = Button(win, text="Withdraw", command=Withdraw)
+    # Wit.grid(row=3, column=1, sticky="ew")
+
+    Current = Label(win, text=f"Current: {currentDisplay}", highlightthickness=1, highlightbackground="Green", padx=170)
+    # Current.grid(row=4, column=0, columnspan=2, sticky="ew")
+
+    Err = Label(win)
+
+    head.grid(row=0, column=0, columnspan=10, sticky="ew")
+    tex1.grid(row=1, column=0, sticky="ew")
+    tex2.grid(row=1, column=1, sticky="ew")
+    Name.grid(row=2, column=0, sticky="ew")
+    Amount.grid(row=2, column=1, sticky="ew")
+    Dep.grid(row=3, column=0, sticky="ew")
+    Wit.grid(row=3, column=1, sticky="ew")
+    Current.grid(row=4, column=0, columnspan=2, sticky="ew")
+
+
+
+
+
 #MAIN MENU STARTS ----------------------------------------------------------------------***********
 
-currentDisplay = "None"
-
-head = Label(win, text="BANK", highlightthickness=1, highlightbackground="grey")
-head.grid(row=0, column=0, columnspan=10, sticky="ew")
-
-
-
-tex1 = Label(win, text="Username ⬇️", highlightthickness=1, highlightbackground="grey")
-tex1.grid(row=1, column=0, sticky="ew")
-
-tex2 = Label(win, text="Amount ⬇️", highlightthickness=1, highlightbackground="grey")
-tex2.grid(row=1, column=1, sticky="ew")
-
-
-
-Name = Entry(win, highlightthickness=1, highlightbackground="grey")
-Name.grid(row=2, column=0, sticky="ew")
-
-Amount = Entry(win, highlightthickness=1, highlightbackground="grey")
-Amount.grid(row=2, column=1, sticky="ew")
-
-
-
-Dep = Button(win, text="Deposit", command=Depo)
-Dep.grid(row=3, column=0, sticky="ew")
-
-Wit = Button(win, text="Withdraw", command=Withdraw)
-Wit.grid(row=3, column=1, sticky="ew")
-
-
-
-Current = Label(win, text=f"Current: {currentDisplay}", highlightthickness=1, highlightbackground="Green", padx=170)
-Current.grid(row=4, column=0, columnspan=2, sticky="ew")
-
-Err = Label(win)
-
+Main()
+            
 
 
 
