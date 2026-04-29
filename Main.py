@@ -1,4 +1,5 @@
 
+
 import importlib
 
 from tkinter import *
@@ -11,6 +12,11 @@ win.attributes("-topmost", True)
 def Exit(event):
     win.destroy()
 win.bind("<Escape>", Exit)
+
+def ClearMain():
+   for widget in win.winfo_children():
+    widget.destroy()
+
 
 
 #FRONT-END FUNCTIONS ------------------------------------------
@@ -53,8 +59,6 @@ def Depo():
     global Err
     name, amount = GetIn()
     
-    
-
 
     loc = f"USERS.{name}"
     userAcc = importlib.import_module(loc)
@@ -64,11 +68,11 @@ def Depo():
 
 
     try:
+        Err.destroy()
+
         if int(amount) < 0:
             ErrorStable("Negative numbers are not allowed as a request!")
-        return
-
-        Err.destroy()
+            return
 
         curAmount += int(amount)
         
@@ -85,9 +89,7 @@ def Withdraw():
     global Err
     name, amount = GetIn()
 
-    if int(amount) < 0:
-        ErrorStable("Negative numbers are not allowed as a request!")
-        return
+    
 
 
     loc = f"USERS.{name}"
@@ -97,6 +99,10 @@ def Withdraw():
 
     try:
         Err.destroy()
+
+        if int(amount) < 0:
+            ErrorStable("Negative numbers are not allowed as a request!")
+            return
 
         if (curAmount - int(amount)) >= 0:
             curAmount -= int(amount)
@@ -109,17 +115,9 @@ def Withdraw():
     except ValueError:
         ErrorStable("Needs to be valid number/amount!")
 
-        
-
-
-
-    
-
-
+#MAIN MENU STARTS ----------------------------------------------------------------------***********
 
 currentDisplay = "None"
-
-
 
 head = Label(win, text="BANK", highlightthickness=1, highlightbackground="grey")
 head.grid(row=0, column=0, columnspan=10, sticky="ew")
@@ -142,10 +140,10 @@ Amount.grid(row=2, column=1, sticky="ew")
 
 
 
-Dep = Button(text="Deposit", command=Depo)
+Dep = Button(win, text="Deposit", command=Depo)
 Dep.grid(row=3, column=0, sticky="ew")
 
-Wit = Button(text="Withdraw", command=Withdraw)
+Wit = Button(win, text="Withdraw", command=Withdraw)
 Wit.grid(row=3, column=1, sticky="ew")
 
 
@@ -154,6 +152,7 @@ Current = Label(win, text=f"Current: {currentDisplay}", highlightthickness=1, hi
 Current.grid(row=4, column=0, columnspan=2, sticky="ew")
 
 Err = Label(win)
+
 
 
 
