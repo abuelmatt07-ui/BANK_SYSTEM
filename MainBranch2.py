@@ -63,6 +63,7 @@ def Depo():
     userAcc = importlib.import_module(loc)
     importlib.reload(userAcc)
     curAmount = getattr(userAcc, "amount")
+    userPass = getattr(userAcc, "password")
 
 
 
@@ -76,7 +77,7 @@ def Depo():
         curAmount += int(amount)
         
         with open(f"USERS/{Name}.py", "w") as f:
-            f.write(f"amount = {curAmount}")
+            f.write(f"amount = {curAmount}\npassword = {userPass}")
 
         UpdateCurDisplay(curAmount)
 
@@ -96,6 +97,7 @@ def Withdraw():
     userAcc = importlib.import_module(loc)
     importlib.reload(userAcc)
     curAmount = getattr(userAcc, "amount")
+    userPass = getattr(userAcc, "password")
 
     try:
         Err.destroy()
@@ -108,7 +110,7 @@ def Withdraw():
             curAmount -= int(amount)
         
         with open(f"USERS/{Name}.py", "w") as f:
-            f.write(f"amount = {curAmount}")
+            f.write(f"amount = {curAmount}\npassword = {userPass}")
 
         UpdateCurDisplay(curAmount)
 
@@ -122,7 +124,31 @@ def Withdraw():
 
 #PAGES ------------------------------------------------------------------------------------------------------
 
-def Main(user):
+def Log():
+    while True:
+        name = input("Username: ")
+
+        userAcc = importlib.import_module(f"USERS.{name}")
+        userPass = getattr(userAcc, "password")
+
+        inPass = input("Password: ")
+
+        if inPass == userPass:
+            UserAmount = getattr(userAcc, "amount")
+            Main(name, UserAmount)
+            break
+        else:
+            print("Check Name or Password!")
+
+    
+
+
+
+
+
+
+
+def Main(user, amount):
     global currentDisplay
     global head
     global tex1
@@ -136,7 +162,9 @@ def Main(user):
 
     Name = user
 
-    currentDisplay = "None"
+
+
+    currentDisplay = amount
 
     head = Label(win, text="BANK", highlightthickness=1, highlightbackground="grey")
     head.grid(row=0, column=0, columnspan=10, sticky="ew")
@@ -163,9 +191,20 @@ def Main(user):
 
 
 
-#MAIN MENU STARTS ----------------------------------------------------------------------***********
+#SYSTEM STARTS ----------------------------------------------------------------------***********
 
-Main("user2")
+
+Log()
+
+
+
+
+
+
+
+
+
+
             
 
 

@@ -1,1 +1,2 @@
-amount = 108
+amount = 402
+password = 123
