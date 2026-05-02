@@ -31,7 +31,7 @@ def UpdateCurDisplay(newDisplay):
 def ErrorStable(error):
     global Err
 
-    Err = Label(win, text=f"Error: {error}", fg="Red")
+    Err = Label(win, text=f"{error}", fg="Red")
     Err.grid(row=5, column=0, columnspan=10, sticky="ew")
 
 
@@ -77,7 +77,7 @@ def Depo():
         curAmount += int(amount)
         
         with open(f"USERS/{Name}.py", "w") as f:
-            f.write(f"amount = {curAmount}\npassword = {userPass}")
+            f.write(f"amount = {curAmount}\npassword = {str(userPass)}")
 
         UpdateCurDisplay(curAmount)
 
@@ -110,7 +110,7 @@ def Withdraw():
             curAmount -= int(amount)
         
         with open(f"USERS/{Name}.py", "w") as f:
-            f.write(f"amount = {curAmount}\npassword = {userPass}")
+            f.write(f"amount = {curAmount}\npassword = {str(userPass)}")
 
         UpdateCurDisplay(curAmount)
 
