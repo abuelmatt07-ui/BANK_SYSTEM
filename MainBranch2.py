@@ -77,7 +77,7 @@ def Depo():
         curAmount += int(amount)
         
         with open(f"USERS/{Name}.py", "w") as f:
-            f.write(f"amount = {curAmount}\npassword = {str(userPass)}")
+            f.write(f"amount = {curAmount}\npassword = \"{userPass}\"")
 
         UpdateCurDisplay(curAmount)
 
@@ -110,7 +110,7 @@ def Withdraw():
             curAmount -= int(amount)
         
         with open(f"USERS/{Name}.py", "w") as f:
-            f.write(f"amount = {curAmount}\npassword = {str(userPass)}")
+            f.write(f"amount = {curAmount}\npassword = \"{userPass}\"")
 
         UpdateCurDisplay(curAmount)
 
