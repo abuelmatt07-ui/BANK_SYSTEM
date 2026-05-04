@@ -1,1 +1,1 @@
-amount = 40
+amount = 5
