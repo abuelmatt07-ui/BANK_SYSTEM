@@ -166,7 +166,7 @@ def Log():
 
     Err = Label(win)
 
-    LogHead = Label(win, text="Login", padx=193, bg="#0D1A63", fg="white", font=("Times", 20, "italic"), pady=10)
+    LogHead = Label(win, text="FranzExpress", padx=193, bg="#0D1A63", fg="white", font=("Times", 20, "italic"), pady=10)
     LogHead.grid(row=0, column=0, columnspan=2, sticky="ew", )
 
     NameLabel = Label(win, text="Username:", bg="#1e1e1e", fg="white")
