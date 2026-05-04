@@ -164,7 +164,7 @@ def Log():
     Err = Label(win)
 
     LogHead = Label(win, text="Log In", highlightthickness=2, highlightbackground="grey", padx=193)
-    LogHead.grid(row=0, column=0, columnspan=2,sticky="ew")
+    LogHead.grid(row=0, column=0, columnspan=2, sticky="ew")
 
     NameLabel = Label(win, text="Username ⬇️", highlightthickness=2, highlightbackground="grey")
     NameLabel.grid(row=1, column=0,sticky="ew")
@@ -178,7 +178,6 @@ def Log():
 
     EnterBut = Button(win, text="Enter", command=LogCheck)   
     EnterBut.grid(row=3, column=0, columnspan=2, sticky="ew")
-
 
 
 
@@ -230,8 +229,8 @@ def Main(user, amount):
 #SYSTEM STARTS ----------------------------------------------------------------------***********
 
 
-Log()
 
+Log()
 
 
 
