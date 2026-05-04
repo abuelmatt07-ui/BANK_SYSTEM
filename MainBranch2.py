@@ -4,7 +4,7 @@ import importlib
 
 from tkinter import *
 win = Tk()
-win.title("Bank Prototype")
+win.title("BANK")
 win.geometry("434x250")
 win.attributes("-topmost", True)
 
@@ -31,7 +31,7 @@ def UpdateCurDisplay(newDisplay):
 def ErrorStable(error, position = 5):
     global Err
 
-    Err = Label(win, text=f"{error}", fg="Red")
+    Err = Label(win, text=f"Invalid: {error}", fg="Red")
     Err.grid(row=position, column=0, columnspan=10, sticky="ew")
 
 
@@ -123,6 +123,8 @@ def LogCheck():
     global UserNameIn
     global Err
 
+    Err = Label(win)
+
     name = UserNameIn.get()
     CheckName = f"USERS.{UserNameIn.get()}"
     PassInCompare = UserPassIn.get()
@@ -159,6 +161,8 @@ def Log():
     global UserNameIn
     global UserPassIn
 
+    Err = Label(win)
+
     LogHead = Label(win, text="Log In", highlightthickness=2, highlightbackground="grey", padx=193)
     LogHead.grid(row=0, column=0, columnspan=2,sticky="ew")
 
@@ -174,29 +178,6 @@ def Log():
 
     EnterBut = Button(win, text="Enter", command=LogCheck)   
     EnterBut.grid(row=3, column=0, columnspan=2, sticky="ew")
-
-
-
-
-
-
-    # while True:
-    #     name = input("Username: ")
-
-    #     userAcc = importlib.import_module(f"USERS.{name}")
-    #     userPass = getattr(userAcc, "password")
-
-    #     inPass = input("Password: ")
-
-    #     if inPass == userPass:
-    #         UserAmount = getattr(userAcc, "amount")
-    #         Main(name, UserAmount)
-    #         break
-    #     else:
-    #         print("Check Name or Password!")
-
-    
-
 
 
 
@@ -221,8 +202,8 @@ def Main(user, amount):
 
     currentDisplay = amount
 
-    head = Label(win, text="BANK", highlightthickness=1, highlightbackground="grey")
-    head.grid(row=0, column=0, columnspan=10, sticky="ew")
+    head = Label(win, text="BANK", highlightthickness=1, highlightbackground="grey", padx=195)
+    head.grid(row=0, column=0, columnspan=2, sticky="ew")
 
     tex2 = Label(win, text="Amount ⬇️", highlightthickness=1, highlightbackground="grey")
     tex2.grid(row=1, column=0, columnspan=2, sticky="ew")
@@ -250,7 +231,7 @@ def Main(user, amount):
 
 
 Log()
-# Main("user1", 100)
+
 
 
 
