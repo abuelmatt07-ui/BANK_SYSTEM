@@ -28,11 +28,11 @@ def UpdateCurDisplay(newDisplay):
     Current = Label(win, text=f"Current: {newDisplay}", highlightthickness=1, highlightbackground="Green", padx=170)
     Current.grid(row=4, column=0, columnspan=2, sticky="ew")
 
-def ErrorStable(error):
+def ErrorStable(error, position = 5):
     global Err
 
     Err = Label(win, text=f"{error}", fg="Red")
-    Err.grid(row=5, column=0, columnspan=10, sticky="ew")
+    Err.grid(row=position, column=0, columnspan=10, sticky="ew")
 
 
 
@@ -118,6 +118,36 @@ def Withdraw():
         ErrorStable("Needs to be valid number/amount!")
 
 
+def LogCheck():
+    global UserPassIn
+    global UserNameIn
+    global Err
+
+    name = UserNameIn.get()
+    CheckName = f"USERS.{UserNameIn.get()}"
+    PassInCompare = UserPassIn.get()
+
+    try:
+        userAccount = importlib.import_module(CheckName)
+        getPass = getattr(userAccount, "password")
+        Err.destroy()
+
+        if PassInCompare == getPass:
+            AccountCurrentAmmount = getattr(userAccount, "amount")
+            ClearMain()
+            Main(name, AccountCurrentAmmount)
+        else:
+            ErrorStable("Please Check Password.", 4)
+    except ModuleNotFoundError:
+        ErrorStable("Please Check Username.", 4)
+
+
+
+
+
+
+
+
 
 
 
@@ -125,20 +155,45 @@ def Withdraw():
 #PAGES ------------------------------------------------------------------------------------------------------
 
 def Log():
-    while True:
-        name = input("Username: ")
 
-        userAcc = importlib.import_module(f"USERS.{name}")
-        userPass = getattr(userAcc, "password")
+    global UserNameIn
+    global UserPassIn
 
-        inPass = input("Password: ")
+    LogHead = Label(win, text="Log In", highlightthickness=2, highlightbackground="grey", padx=193)
+    LogHead.grid(row=0, column=0, columnspan=2,sticky="ew")
 
-        if inPass == userPass:
-            UserAmount = getattr(userAcc, "amount")
-            Main(name, UserAmount)
-            break
-        else:
-            print("Check Name or Password!")
+    NameLabel = Label(win, text="Username ⬇️", highlightthickness=2, highlightbackground="grey")
+    NameLabel.grid(row=1, column=0,sticky="ew")
+    UserNameIn = Entry(win, highlightthickness=2, highlightbackground="grey")
+    UserNameIn.grid(row=2, column=0, sticky="ew")
+
+    PassLabel = Label(win, text="Password ⬇️", highlightthickness=2, highlightbackground="grey")
+    PassLabel.grid(row=1, column=1,sticky="ew")
+    UserPassIn = Entry(win, highlightthickness=2, highlightbackground="grey")
+    UserPassIn.grid(row=2, column=1, sticky="ew")
+
+    EnterBut = Button(win, text="Enter", command=LogCheck)   
+    EnterBut.grid(row=3, column=0, columnspan=2, sticky="ew")
+
+
+
+
+
+
+    # while True:
+    #     name = input("Username: ")
+
+    #     userAcc = importlib.import_module(f"USERS.{name}")
+    #     userPass = getattr(userAcc, "password")
+
+    #     inPass = input("Password: ")
+
+    #     if inPass == userPass:
+    #         UserAmount = getattr(userAcc, "amount")
+    #         Main(name, UserAmount)
+    #         break
+    #     else:
+    #         print("Check Name or Password!")
 
     
 
@@ -172,7 +227,7 @@ def Main(user, amount):
     tex2 = Label(win, text="Amount ⬇️", highlightthickness=1, highlightbackground="grey")
     tex2.grid(row=1, column=0, columnspan=2, sticky="ew")
 
-    Amount = Entry(win, highlightthickness=1, highlightbackground="grey")
+    Amount = Entry(win, highlightthickness=2, highlightbackground="grey")
     Amount.grid(row=2, column=0, columnspan=2, sticky="ew")
 
     Dep = Button(win, text="Deposit", command=Depo)
@@ -195,6 +250,7 @@ def Main(user, amount):
 
 
 Log()
+# Main("user1", 100)
 
 
 
