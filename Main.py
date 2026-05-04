@@ -141,14 +141,14 @@ def Main():
     head = Label(win, text="BANK", highlightthickness=1, highlightbackground="grey")
     head.grid(row=0, column=0, columnspan=10, sticky="ew")
 
-    tex1 = Label(win, text="Username ⬇️", highlightthickness=1, highlightbackground="grey")
-    tex1.grid(row=1, column=0, sticky="ew")
+    tex1 = Label(win, text="Username ⬇️", highlightthickness=1, highlightbackground="grey",)
+    tex1.grid(row=1, column=0, sticky="w")
 
     tex2 = Label(win, text="Amount ⬇️", highlightthickness=1, highlightbackground="grey")
     tex2.grid(row=1, column=1, sticky="ew")
 
     Name = Entry(win, highlightthickness=1, highlightbackground="grey")
-    Name.grid(row=2, column=0, sticky="ew")
+    Name.grid(row=2, column=0, sticky="w")
 
     Amount = Entry(win, highlightthickness=1, highlightbackground="grey")
     Amount.grid(row=2, column=1, sticky="ew")

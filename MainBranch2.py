@@ -4,9 +4,11 @@ import importlib
 
 from tkinter import *
 win = Tk()
-win.title("BANK")
+win.title("Bank")
 win.geometry("434x250")
 win.attributes("-topmost", True)
+
+win.config(bg="#1e1e1e")
 
 #WINDOW FUNCTIONS --------------------------------------------------------
 def Exit(event):
@@ -25,10 +27,9 @@ def ClearMain():
 def UpdateCurDisplay(newDisplay):
     global currentDisplay
 
-    Current = Label(win, text=f"Current: {newDisplay}", highlightthickness=1, highlightbackground="Green", padx=170)
-    Current.grid(row=4, column=0, columnspan=2, sticky="ew")
+    Current.config(text=f"Current: {newDisplay}$")
 
-def ErrorStable(error, position = 5):
+def ErrorStable(error, position = 6):
     global Err
 
     Err = Label(win, text=f"Invalid: {error}", fg="Red")
@@ -139,9 +140,9 @@ def LogCheck():
             ClearMain()
             Main(name, AccountCurrentAmmount)
         else:
-            ErrorStable("Please Check Password.", 4)
+            ErrorStable("Please Check Password.", 5)
     except ModuleNotFoundError:
-        ErrorStable("Please Check Username.", 4)
+        ErrorStable("Please Check Username.", 5)
 
 
 
@@ -158,32 +159,39 @@ def LogCheck():
 
 def Log():
 
+    win.columnconfigure(1, weight=1)
+
     global UserNameIn
     global UserPassIn
 
     Err = Label(win)
 
-    LogHead = Label(win, text="Log In", highlightthickness=2, highlightbackground="grey", padx=193)
-    LogHead.grid(row=0, column=0, columnspan=2, sticky="ew")
+    LogHead = Label(win, text="Login", padx=193, bg="#0D1A63", fg="white", font=("Times", 20, "italic"), pady=10)
+    LogHead.grid(row=0, column=0, columnspan=2, sticky="ew", )
 
-    NameLabel = Label(win, text="Username ⬇️", highlightthickness=2, highlightbackground="grey")
-    NameLabel.grid(row=1, column=0,sticky="ew")
-    UserNameIn = Entry(win, highlightthickness=2, highlightbackground="grey")
-    UserNameIn.grid(row=2, column=0, sticky="ew")
+    NameLabel = Label(win, text="Username:", bg="#1e1e1e", fg="white")
+    NameLabel.grid(row=2, column=0,sticky="ew")
+    UserNameIn = Entry(win, highlightthickness=2, highlightbackground="grey", bg="#1e1e1e", fg="white")
+    UserNameIn.grid(row=2, column=1, sticky="ew")
 
-    PassLabel = Label(win, text="Password ⬇️", highlightthickness=2, highlightbackground="grey")
-    PassLabel.grid(row=1, column=1,sticky="ew")
-    UserPassIn = Entry(win, highlightthickness=2, highlightbackground="grey")
-    UserPassIn.grid(row=2, column=1, sticky="ew")
+    PassLabel = Label(win, text="Password:", bg="#1e1e1e", fg="white")
+    PassLabel.grid(row=3, column=0,sticky="ew")
+    UserPassIn = Entry(win, highlightthickness=2, highlightbackground="grey", bg="#1e1e1e", fg="white")
+    UserPassIn.grid(row=3, column=1, sticky="ew")
 
     EnterBut = Button(win, text="Enter", command=LogCheck)   
-    EnterBut.grid(row=3, column=0, columnspan=2, sticky="ew")
+    EnterBut.grid(row=4, column=0, columnspan=2, sticky="ew")
+
+    UserNameIn.focus_set()
 
 
 
 
 
 def Main(user, amount):
+
+    win.columnconfigure(1, weight=1)
+
     global currentDisplay
     global head
     global tex1
@@ -201,25 +209,27 @@ def Main(user, amount):
 
     currentDisplay = amount
 
-    head = Label(win, text="BANK", highlightthickness=1, highlightbackground="grey", padx=195)
+    head = Label(win, text=f"Welcome, {Name}!", padx=193, bg="#0D1A63", fg="white", font=("Times", 20, "italic"), pady=10)
     head.grid(row=0, column=0, columnspan=2, sticky="ew")
 
-    tex2 = Label(win, text="Amount ⬇️", highlightthickness=1, highlightbackground="grey")
-    tex2.grid(row=1, column=0, columnspan=2, sticky="ew")
+    tex2 = Label(win, text="Amount:", bg="#1e1e1e", fg="white")
+    tex2.grid(row=1, column=0, sticky="ew")
 
-    Amount = Entry(win, highlightthickness=2, highlightbackground="grey")
-    Amount.grid(row=2, column=0, columnspan=2, sticky="ew")
+    Amount = Entry(win, highlightthickness=2, highlightbackground="grey", bg="#1e1e1e")
+    Amount.grid(row=1, column=1, sticky="ew")
 
     Dep = Button(win, text="Deposit", command=Depo)
-    Dep.grid(row=3, column=0, sticky="ew")
+    Dep.grid(row=2, column=0, sticky="ew", columnspan=2)
 
     Wit = Button(win, text="Withdraw", command=Withdraw)
-    Wit.grid(row=3, column=1, sticky="ew")
+    Wit.grid(row=3, column=0, sticky="ew", columnspan=2)
 
-    Current = Label(win, text=f"Current: {currentDisplay}", highlightthickness=1, highlightbackground="Green", padx=170)
+    Current = Label(win, text=f"Current: {currentDisplay}$", highlightthickness=1, highlightbackground="Green", padx=170)
     Current.grid(row=4, column=0, columnspan=2, sticky="ew")
 
     Err = Label(win)
+
+    Amount.focus_set()
 
 
 
