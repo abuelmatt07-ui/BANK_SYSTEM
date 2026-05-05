@@ -31,8 +31,9 @@ def UpdateCurDisplay(newDisplay):
 
 def ErrorStable(error, position = 6):
     global Err
+    global Container
 
-    Err = Label(win, text=f"Invalid: {error}", fg="Red", bg="#1e1e1e")
+    Err = Label(Container, text=f"Invalid: {error}", fg="Red", bg="#1e1e1e")
     Err.grid(row=position, column=0, columnspan=10, sticky="ew")
 
 
@@ -160,26 +161,34 @@ def LogCheck():
 def Log():
 
     win.columnconfigure(1, weight=1)
+    win.rowconfigure(1, weight=1)
 
     global UserNameIn
     global UserPassIn
 
-    Err = Label(win)
+
+    global Container
+    Container = Frame(bg="#1e1e1e", pady=30, padx=30)
+    Container.grid(row=1, column=1, sticky="ns")
+    Container.columnconfigure(1, weight=1)
+
+
+    Err = Label(Container)
 
     LogHead = Label(win, text="FranzExpress", padx=193, bg="#0D1A63", fg="white", font=("Times", 20, "italic"), pady=10)
     LogHead.grid(row=0, column=0, columnspan=2, sticky="ew", )
 
-    NameLabel = Label(win, text="Username:", bg="#1e1e1e", fg="white")
+    NameLabel = Label(Container, text="Username:", bg="#1e1e1e", fg="white")
     NameLabel.grid(row=2, column=0,sticky="ew")
-    UserNameIn = Entry(win, highlightthickness=2, highlightbackground="grey", bg="#1e1e1e", fg="white")
+    UserNameIn = Entry(Container, highlightthickness=2, highlightbackground="grey", bg="#1e1e1e", fg="white")
     UserNameIn.grid(row=2, column=1, sticky="ew")
 
-    PassLabel = Label(win, text="Password:", bg="#1e1e1e", fg="white")
+    PassLabel = Label(Container, text="Password:", bg="#1e1e1e", fg="white")
     PassLabel.grid(row=3, column=0,sticky="ew")
-    UserPassIn = Entry(win, highlightthickness=2, highlightbackground="grey", bg="#1e1e1e", fg="white")
+    UserPassIn = Entry(Container, highlightthickness=2, highlightbackground="grey", bg="#1e1e1e", fg="white")
     UserPassIn.grid(row=3, column=1, sticky="ew")
 
-    EnterBut = Button(win, text="Enter", command=LogCheck)   
+    EnterBut = Button(Container, text="Enter", command=LogCheck)   
     EnterBut.grid(row=4, column=0, columnspan=2, sticky="ew")
 
     UserNameIn.focus_set()
@@ -192,6 +201,12 @@ def Main(user, amount):
 
     win.columnconfigure(1, weight=1)
 
+    global Container
+    Container = Frame(bg="#1e1e1e", pady=30, padx=30)
+    Container.grid(row=1, column=1, sticky="ns")
+    Container.columnconfigure(1, weight=1)
+
+
     global currentDisplay
     global head
     global tex1
@@ -202,6 +217,7 @@ def Main(user, amount):
     global Current
     global Err
     global Name
+ 
 
     Name = user
 
@@ -212,22 +228,22 @@ def Main(user, amount):
     head = Label(win, text=f"Welcome, {Name}!", padx=193, bg="#0D1A63", fg="white", font=("Times", 20, "italic"), pady=10)
     head.grid(row=0, column=0, columnspan=2, sticky="ew")
 
-    tex2 = Label(win, text="Amount:", bg="#1e1e1e", fg="white")
+    tex2 = Label(Container, text="Amount:", bg="#1e1e1e", fg="white")
     tex2.grid(row=1, column=0, sticky="ew")
 
-    Amount = Entry(win, highlightthickness=2, highlightbackground="grey", bg="#1e1e1e")
+    Amount = Entry(Container, highlightthickness=2, highlightbackground="grey", bg="#1e1e1e")
     Amount.grid(row=1, column=1, sticky="ew")
 
-    Dep = Button(win, text="Deposit", command=Depo)
+    Dep = Button(Container, text="Deposit", command=Depo)
     Dep.grid(row=2, column=0, sticky="ew", columnspan=2)
 
-    Wit = Button(win, text="Withdraw", command=Withdraw)
+    Wit = Button(Container, text="Withdraw", command=Withdraw)
     Wit.grid(row=3, column=0, sticky="ew", columnspan=2)
 
-    Current = Label(win, text=f"Current: {currentDisplay}$", highlightthickness=1, highlightbackground="Green", bg="#1e1e1e")
+    Current = Label(Container, text=f"Current: {currentDisplay}$", fg="green", bg="#1e1e1e")
     Current.grid(row=4, column=0, columnspan=2, sticky="ew")
 
-    Err = Label(win)
+    Err = Label(Container)
 
     Amount.focus_set()
 
