@@ -119,7 +119,7 @@ def Withdraw():
         UpdateCurDisplay(curAmount)
 
     except ValueError:
-        ErrorStable("Needs to be valid number/amount!")
+        ErrorStable("Needs to be valid number/amount.")
 
 
 def LogCheck():
