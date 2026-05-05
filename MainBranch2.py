@@ -32,7 +32,7 @@ def UpdateCurDisplay(newDisplay):
 def ErrorStable(error, position = 6):
     global Err
 
-    Err = Label(win, text=f"Invalid: {error}", fg="Red")
+    Err = Label(win, text=f"Invalid: {error}", fg="Red", bg="#1e1e1e")
     Err.grid(row=position, column=0, columnspan=10, sticky="ew")
 
 
