@@ -224,7 +224,7 @@ def Main(user, amount):
     Wit = Button(win, text="Withdraw", command=Withdraw)
     Wit.grid(row=3, column=0, sticky="ew", columnspan=2)
 
-    Current = Label(win, text=f"Current: {currentDisplay}$", highlightthickness=1, highlightbackground="Green", padx=170)
+    Current = Label(win, text=f"Current: {currentDisplay}$", highlightthickness=1, highlightbackground="Green", bg="#1e1e1e")
     Current.grid(row=4, column=0, columnspan=2, sticky="ew")
 
     Err = Label(win)
