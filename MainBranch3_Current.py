@@ -168,7 +168,7 @@ def Log():
 
 
     global Container
-    Container = Frame(bg="#1e1e1e", pady=30, padx=30)
+    Container = Frame(bg="#1e1e1e", pady=20, padx=30)
     Container.grid(row=1, column=1, sticky="ns")
     Container.columnconfigure(1, weight=1)
 
@@ -202,7 +202,7 @@ def Main(user, amount):
     win.columnconfigure(1, weight=1)
 
     global Container
-    Container = Frame(bg="#1e1e1e", pady=30, padx=30)
+    Container = Frame(bg="#1e1e1e", pady=20, padx=30)
     Container.grid(row=1, column=1, sticky="ns")
     Container.columnconfigure(1, weight=1)
 
@@ -240,7 +240,7 @@ def Main(user, amount):
     Wit = Button(Container, text="Withdraw", command=Withdraw)
     Wit.grid(row=3, column=0, sticky="ew", columnspan=2)
 
-    Current = Label(Container, text=f"Current: {currentDisplay}$", fg="green", bg="#1e1e1e")
+    Current = Label(Container, text=f"Current: {currentDisplay}$", fg="#72BAA9", bg="#1e1e1e")
     Current.grid(row=4, column=0, columnspan=2, sticky="ew")
 
     Err = Label(Container)
