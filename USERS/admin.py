@@ -1,2 +1,2 @@
-amount = 500
+amount = 314
 password = "admin123"

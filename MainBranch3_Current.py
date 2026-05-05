@@ -73,7 +73,7 @@ def Depo():
         Err.destroy()
 
         if int(amount) < 0:
-            ErrorStable("Negative numbers are not allowed as a request!")
+            ErrorStable("Positive numbers only.")
             return
 
         curAmount += int(amount)
@@ -84,7 +84,7 @@ def Depo():
         UpdateCurDisplay(curAmount)
 
     except ValueError:
-        ErrorStable("Needs to be valid number/amount!")
+        ErrorStable("Needs to be valid number/amount.")
 
 
 def Withdraw():
@@ -105,11 +105,13 @@ def Withdraw():
         Err.destroy()
 
         if int(amount) < 0:
-            ErrorStable("Negative numbers are not allowed as a request!")
+            ErrorStable("Positive numbers only.")
             return
 
         if (curAmount - int(amount)) >= 0:
             curAmount -= int(amount)
+        else:
+            ErrorStable("Insufficient Funds.")
         
         with open(f"USERS/{Name}.py", "w") as f:
             f.write(f"amount = {curAmount}\npassword = \"{userPass}\"")
@@ -146,6 +148,9 @@ def LogCheck():
         ErrorStable("Please Check Username.", 5)
 
 
+def BackToLog():
+    ClearMain()
+    Log()
 
 
 
@@ -220,10 +225,12 @@ def Main(user, amount):
  
 
     Name = user
-
-
-
     currentDisplay = amount
+
+
+    Back = Button(Container, text="Logout", command=BackToLog)
+    Back.grid(row=5)
+
 
     head = Label(win, text=f"Welcome, {Name}!", padx=193, bg="#0D1A63", fg="white", font=("Times", 20, "italic"), pady=10)
     head.grid(row=0, column=0, columnspan=2, sticky="ew")
