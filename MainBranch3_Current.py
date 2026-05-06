@@ -193,6 +193,8 @@ def BackToLog():
 
 def Register():
 
+    ClearMain()
+
     win.columnconfigure(1, weight=1)
     win.rowconfigure(1, weight=1)
 
@@ -278,7 +280,7 @@ def Log():
     Ques = Label(Container, text="or", bg="#1e1e1e", fg="white")
     Ques.grid(columnspan=2)
 
-    Button(Container, text="Create an Account NOW!", command=Create).grid(columnspan=2, sticky="ew")
+    Button(Container, text="Create an Account NOW!", command=Register).grid(columnspan=2, sticky="ew")
 
 
 
@@ -345,7 +347,7 @@ def Main(user, amount):
 
 
 
-Register()
+Log()
 
 
 
