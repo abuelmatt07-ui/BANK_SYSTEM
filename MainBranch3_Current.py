@@ -180,7 +180,7 @@ def Log():
 
     Err = Label(Container)
 
-    LogHead = Label(win, text="FranzExpress", padx=193, bg="#0D1A63", fg="white", font=("Times", 20, "italic"), pady=10)
+    LogHead = Label(win, text="FalawanExpress", padx=193, bg="#0D1A63", fg="white", font=("Times", 20, "italic"), pady=10)
     LogHead.grid(row=0, column=0, columnspan=2, sticky="ew", )
 
     NameLabel = Label(Container, text="Username:", bg="#1e1e1e", fg="white")
@@ -190,7 +190,7 @@ def Log():
 
     PassLabel = Label(Container, text="Password:", bg="#1e1e1e", fg="white")
     PassLabel.grid(row=3, column=0,sticky="ew")
-    UserPassIn = Entry(Container, highlightthickness=2, highlightbackground="grey", bg="#1e1e1e", fg="white")
+    UserPassIn = Entry(Container, highlightthickness=2, highlightbackground="grey", bg="#1e1e1e", fg="white", show="*")
     UserPassIn.grid(row=3, column=1, sticky="ew")
 
     EnterBut = Button(Container, text="Enter", command=LogCheck)   
