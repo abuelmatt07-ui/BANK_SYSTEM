@@ -34,6 +34,7 @@ def ErrorStable(error, position = 6):
     global Err
     global Container
 
+    Err.destroy()
     Err = Label(Container, text=f"Invalid: {error}", fg="Red", bg="#1e1e1e")
     Err.grid(row=position, column=0, columnspan=10, sticky="ew")
 
@@ -53,34 +54,51 @@ def GetIn():
     return Amount.get()
 
 def Cret():
+
+
+    invalidChars = ['!', '@', '#', '$', '%', '^', '&', '*', '(', ')', 
+    '-', '+', '=', '{', '}', '[', ']', '|', '\\', ':', 
+    ';', '"', "'", '<', '>', ',', '.', '?', '/', '`', '~', '_']
+
     name = UserNameIn.get().strip()
     password = UserPassIn.get()
     global Amount 
     amount = Amount.get().strip()
+
     if not name or not password or not amount:
-        ErrorStable("Fill all fields!", 6)
+        ErrorStable("Fill all fields.", 6)
+        return
+    
+    for char in invalidChars:
+        if char in name:
+            ErrorStable("Numbers & Letters\nfor Username Only.", 6)
+            return
+        
+    if " " in name:
+        ErrorStable("No Space on Username Allowed.", 6)
         return
 
     try:
         amount = int(amount)
     except ValueError:
-        ErrorStable("Amount must be number!", 6)
+        ErrorStable("Amount must be number.", 6)
         return
 
     if amount < 0:
-        ErrorStable("Cannot be negative!", 6)
+        ErrorStable("Cannot be negative.", 6)
         return
 
     os.makedirs("USERS", exist_ok=True)
 
-    path = f"USERS/{name}.py"
+    path = f"USERS/user_{name}.py"
     if os.path.exists(path):
-        ErrorStable("User already exists!", 6)
+        ErrorStable("User already exists.", 6)
         return
 
     with open(path, "w") as f:
         f.write(f"amount = {amount}\npassword = \"{password}\"")
 
+    BackToLog()
     Notif("Account Created!", 6)
 
 def Depo():
@@ -88,7 +106,7 @@ def Depo():
     amount = GetIn()
     
 
-    loc = f"USERS.{Name}"
+    loc = f"USERS.user_{Name}"
     userAcc = importlib.import_module(loc)
     importlib.reload(userAcc)
     curAmount = getattr(userAcc, "amount")
@@ -105,7 +123,7 @@ def Depo():
 
         curAmount += int(amount)
         
-        with open(f"USERS/{Name}.py", "w") as f:
+        with open(f"USERS/user_{Name}.py", "w") as f:
             f.write(f"amount = {curAmount}\npassword = \"{userPass}\"")
 
         UpdateCurDisplay(curAmount)
@@ -122,7 +140,7 @@ def Withdraw():
     
 
 
-    loc = f"USERS.{Name}"
+    loc = f"USERS.user_{Name}"
     userAcc = importlib.import_module(loc)
     importlib.reload(userAcc)
     curAmount = getattr(userAcc, "amount")
@@ -140,7 +158,7 @@ def Withdraw():
         else:
             ErrorStable("Insufficient Funds.")
         
-        with open(f"USERS/{Name}.py", "w") as f:
+        with open(f"USERS/user_{Name}.py", "w") as f:
             f.write(f"amount = {curAmount}\npassword = \"{userPass}\"")
 
         UpdateCurDisplay(curAmount)
@@ -157,7 +175,7 @@ def LogCheck():
     Err = Label(win)
 
     name = UserNameIn.get()
-    CheckName = f"USERS.{UserNameIn.get()}"
+    CheckName = f"USERS.user_{UserNameIn.get()}"
     PassInCompare = UserPassIn.get()
 
     if not UserNameIn or not PassInCompare:
@@ -280,7 +298,7 @@ def Log():
     UserPassIn = Entry(Container, highlightthickness=2, highlightbackground="grey", bg="#1e1e1e", fg="white", show="*")
     UserPassIn.grid(row=3, column=1, sticky="ew")
 
-    EnterBut = Button(Container, text="Enter", command=LogCheck)   
+    EnterBut = Button(Container, text="Login", command=LogCheck)   
     EnterBut.grid(row=4, column=0, columnspan=2, sticky="ew")
 
     UserNameIn.focus_set()
