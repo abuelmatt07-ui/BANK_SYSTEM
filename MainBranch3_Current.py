@@ -55,10 +55,14 @@ def GetIn():
 
 def Cret():
 
+    global Err
+
+    Err = Label(Container)
+
 
     invalidChars = ['!', '@', '#', '$', '%', '^', '&', '*', '(', ')', 
-    '-', '+', '=', '{', '}', '[', ']', '|', '\\', ':', 
-    ';', '"', "'", '<', '>', ',', '.', '?', '/', '`', '~', '_']
+                    '-', '+', '=', '{', '}', '[', ']', '|', '\\', ':', 
+                    ';', '"', "'", '<', '>', ',', '.', '?', '/', '`', '~', '_']
 
     name = UserNameIn.get().strip()
     password = UserPassIn.get()
@@ -243,10 +247,10 @@ def Register():
 
     PassLabel = Label(Container, text="Password:", bg="#1e1e1e", fg="white")
     PassLabel.grid(row=3, column=0,sticky="ew")
-    UserPassIn = Entry(Container, highlightthickness=2, highlightbackground="grey", bg="#1e1e1e", fg="white", show="*")
+    UserPassIn = Entry(Container, highlightthickness=2, highlightbackground="grey", bg="#1e1e1e", fg="white")
     UserPassIn.grid(row=3, column=1, sticky="ew")
 
-    Amount = Label(Container, text="Initial Amount:", bg="#1e1e1e", fg="white")
+    Amount = Label(Container, text="Initial Deposit:", bg="#1e1e1e", fg="white")
     Amount.grid(row=4, column=0,sticky="ew")
     Amount = Entry(Container, highlightthickness=2, highlightbackground="grey", bg="#1e1e1e")
     Amount.grid(row=4, column=1, sticky="ew")
