@@ -1,6 +1,7 @@
 
 
 import importlib
+import os
 
 from tkinter import *
 win = Tk()
@@ -36,6 +37,13 @@ def ErrorStable(error, position = 6):
     Err = Label(Container, text=f"Invalid: {error}", fg="Red", bg="#1e1e1e")
     Err.grid(row=position, column=0, columnspan=10, sticky="ew")
 
+def Notif(text, position = 6):
+    global Err
+    global Container
+
+    Err = Label(Container, text=f"{text}", fg="#72BAA9", bg="#1e1e1e")
+    Err.grid(row=position, column=0, columnspan=10, sticky="ew")
+
 
 
 #BACK-END FUNCTIONS --------------------------------------------
@@ -45,16 +53,35 @@ def GetIn():
     return Amount.get()
 
 def Cret():
-    global Name
-    global Amount
+    name = UserNameIn.get().strip()
+    password = UserPassIn.get()
+    global Amount 
+    amount = Amount.get().strip()
+    if not name or not password or not amount:
+        ErrorStable("Fill all fields!", 6)
+        return
 
-    name = Name.get()
-    amount = int(Amount.get())
+    try:
+        amount = int(amount)
+    except ValueError:
+        ErrorStable("Amount must be number!", 6)
+        return
 
+    if amount < 0:
+        ErrorStable("Cannot be negative!", 6)
+        return
 
-    with open(f"USERS/{name}.py", "w") as cret:
-        cret.write(f"amount = {amount}")
+    os.makedirs("USERS", exist_ok=True)
 
+    path = f"USERS/{name}.py"
+    if os.path.exists(path):
+        ErrorStable("User already exists!", 6)
+        return
+
+    with open(path, "w") as f:
+        f.write(f"amount = {amount}\npassword = \"{password}\"")
+
+    Notif("Account Created!", 6)
 
 def Depo():
     global Err
@@ -163,6 +190,56 @@ def BackToLog():
 
 #PAGES ------------------------------------------------------------------------------------------------------
 
+
+def Register():
+
+    win.columnconfigure(1, weight=1)
+    win.rowconfigure(1, weight=1)
+
+    global UserNameIn
+    global UserPassIn
+    global Amount
+
+
+    global Container
+    Container = Frame(bg="#1e1e1e", pady=20, padx=30)
+    Container.grid(row=1, column=1, sticky="ns")
+    Container.columnconfigure(1, weight=1)
+
+
+    Err = Label(Container)
+
+    LogHead = Label(win, text="FalawanExpress", padx=193, bg="#0D1A63", fg="white", font=("Times", 20, "italic"), pady=10)
+    LogHead.grid(row=0, column=0, columnspan=2, sticky="ew", )
+
+    NameLabel = Label(Container, text="Username:", bg="#1e1e1e", fg="white")
+    NameLabel.grid(row=2, column=0,sticky="ew")
+    UserNameIn = Entry(Container, highlightthickness=2, highlightbackground="grey", bg="#1e1e1e", fg="white")
+    UserNameIn.grid(row=2, column=1, sticky="ew")
+
+    PassLabel = Label(Container, text="Password:", bg="#1e1e1e", fg="white")
+    PassLabel.grid(row=3, column=0,sticky="ew")
+    UserPassIn = Entry(Container, highlightthickness=2, highlightbackground="grey", bg="#1e1e1e", fg="white", show="*")
+    UserPassIn.grid(row=3, column=1, sticky="ew")
+
+    Amount = Label(Container, text="Initial Amount:", bg="#1e1e1e", fg="white")
+    Amount.grid(row=4, column=0,sticky="ew")
+    Amount = Entry(Container, highlightthickness=2, highlightbackground="grey", bg="#1e1e1e")
+    Amount.grid(row=4, column=1, sticky="ew")
+
+    UserNameIn.focus_set()
+
+    Button(Container, text="Register", command=Cret).grid(columnspan=2, sticky="ew")
+
+
+
+
+
+
+
+
+
+
 def Log():
 
     win.columnconfigure(1, weight=1)
@@ -197,6 +274,11 @@ def Log():
     EnterBut.grid(row=4, column=0, columnspan=2, sticky="ew")
 
     UserNameIn.focus_set()
+
+    Ques = Label(Container, text="or", bg="#1e1e1e", fg="white")
+    Ques.grid(columnspan=2)
+
+    Button(Container, text="Create an Account NOW!", command=Create).grid(columnspan=2, sticky="ew")
 
 
 
@@ -263,7 +345,7 @@ def Main(user, amount):
 
 
 
-Log()
+Register()
 
 
 
