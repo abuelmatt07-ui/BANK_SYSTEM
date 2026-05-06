@@ -16,7 +16,7 @@ def Exit(event):
     win.destroy()
 win.bind("<Escape>", Exit)
 
-def ClearMain():
+def ClearWin():
    for widget in win.winfo_children():
     widget.destroy()
 
@@ -160,6 +160,10 @@ def LogCheck():
     CheckName = f"USERS.{UserNameIn.get()}"
     PassInCompare = UserPassIn.get()
 
+    if not UserNameIn or not PassInCompare:
+        ErrorStable("Please fill all fields.", 6)
+        return
+
     try:
         userAccount = importlib.import_module(CheckName)
         getPass = getattr(userAccount, "password")
@@ -167,16 +171,16 @@ def LogCheck():
 
         if PassInCompare == getPass:
             AccountCurrentAmmount = getattr(userAccount, "amount")
-            ClearMain()
+            ClearWin()
             Main(name, AccountCurrentAmmount)
         else:
-            ErrorStable("Please Check Password.", 5)
+            ErrorStable("Please Check Password.", 6)
     except ModuleNotFoundError:
-        ErrorStable("Please Check Username.", 5)
+        ErrorStable("Please Check Username.", 6)
 
 
 def BackToLog():
-    ClearMain()
+    ClearWin()
     Log()
 
 
@@ -193,7 +197,7 @@ def BackToLog():
 
 def Register():
 
-    ClearMain()
+    ClearWin()
 
     win.columnconfigure(1, weight=1)
     win.rowconfigure(1, weight=1)
@@ -231,7 +235,11 @@ def Register():
 
     UserNameIn.focus_set()
 
-    Button(Container, text="Register", command=Cret).grid(columnspan=2, sticky="ew")
+    Button(Container, text="Register", command=Cret).grid(columnspan=2, sticky="e")
+
+
+    Back = Button(Container, text="Back", command=BackToLog)
+    Back.grid(row=5)
 
 
 
@@ -277,10 +285,14 @@ def Log():
 
     UserNameIn.focus_set()
 
-    Ques = Label(Container, text="or", bg="#1e1e1e", fg="white")
-    Ques.grid(columnspan=2)
+    RegisterCont = Frame(Container, bg="#1e1e1e")
+    RegisterCont.grid(column=0, row=5, columnspan=2)
 
-    Button(Container, text="Create an Account NOW!", command=Register).grid(columnspan=2, sticky="ew")
+    Ques = Label(RegisterCont, text="or", bg="#1e1e1e", fg="white")
+    Ques.grid(column=0, row=5, sticky="e")
+
+    Button(RegisterCont, text="Create an Account NOW!", command=Register).grid(column=1, row=5)
+    
 
 
 
