@@ -9,7 +9,8 @@ win.title("Bank")
 win.geometry("434x250")
 win.attributes("-topmost", True)
 
-win.config(bg="#1e1e1e")
+win.config(bg="#44444E")
+headerColor = "#37353E"
 
 #WINDOW FUNCTIONS --------------------------------------------------------
 def Exit(event):
@@ -228,16 +229,20 @@ def Register():
     global UserPassIn
     global Amount
 
+    global headerColor
+
+    
+
 
     global Container
-    Container = Frame(bg="#1e1e1e", pady=20, padx=30)
+    Container = Frame(bg="#1e1e1e", pady=20, padx=50)
     Container.grid(row=1, column=1, sticky="ns")
     Container.columnconfigure(1, weight=1)
 
 
     Err = Label(Container)
 
-    LogHead = Label(win, text="FalawanExpress", padx=193, bg="#0D1A63", fg="white", font=("Times", 20, "italic"), pady=10)
+    LogHead = Label(win, text="FalawanExpress", padx=193, bg=headerColor, fg="white", font=("Times", 20, "italic"), pady=10)
     LogHead.grid(row=0, column=0, columnspan=2, sticky="ew", )
 
     NameLabel = Label(Container, text="Username:", bg="#1e1e1e", fg="white")
@@ -278,18 +283,20 @@ def Log():
     win.rowconfigure(1, weight=1)
 
     global UserNameIn
-    global UserPassIn
+    global UserPassIn 
+
+    global headerColor
 
 
     global Container
-    Container = Frame(bg="#1e1e1e", pady=20, padx=30)
+    Container = Frame(bg="#1e1e1e", pady=20, padx=50)
     Container.grid(row=1, column=1, sticky="ns")
     Container.columnconfigure(1, weight=1)
 
 
     Err = Label(Container)
 
-    LogHead = Label(win, text="FalawanExpress", padx=193, bg="#0D1A63", fg="white", font=("Times", 20, "italic"), pady=10)
+    LogHead = Label(win, text="FalawanExpress", padx=193, bg=headerColor, fg="white", font=("Times", 20, "italic"), pady=10)
     LogHead.grid(row=0, column=0, columnspan=2, sticky="ew", )
 
     NameLabel = Label(Container, text="Username:", bg="#1e1e1e", fg="white")
@@ -325,7 +332,7 @@ def Main(user, amount):
     win.columnconfigure(1, weight=1)
 
     global Container
-    Container = Frame(bg="#1e1e1e", pady=20, padx=30)
+    Container = Frame(bg="#1e1e1e", pady=20, padx=50)
     Container.grid(row=1, column=1, sticky="ns")
     Container.columnconfigure(1, weight=1)
 
@@ -340,6 +347,8 @@ def Main(user, amount):
     global Current
     global Err
     global Name
+
+    global headerColor
  
 
     Name = user
@@ -350,7 +359,7 @@ def Main(user, amount):
     Back.grid(row=5)
 
 
-    head = Label(win, text=f"Welcome, {Name}!", padx=193, bg="#0D1A63", fg="white", font=("Times", 20, "italic"), pady=10)
+    head = Label(win, text=f"Welcome back, {Name}!", padx=193, bg=headerColor, fg="white", font=("Times", 20, "italic"), pady=10)
     head.grid(row=0, column=0, columnspan=2, sticky="ew")
 
     tex2 = Label(Container, text="Amount:", bg="#1e1e1e", fg="white")
