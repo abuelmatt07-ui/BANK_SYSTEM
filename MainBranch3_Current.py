@@ -2,15 +2,22 @@
 
 import importlib
 import os
-
 from tkinter import *
+import datetime
+
 win = Tk()
 win.title("Bank")
-win.geometry("434x250")
+win.geometry("500x400")
 win.attributes("-topmost", True)
 
 win.config(bg="#44444E")
 headerColor = "#37353E"
+
+
+
+
+
+
 
 #WINDOW FUNCTIONS --------------------------------------------------------
 def Exit(event):
@@ -103,6 +110,8 @@ def Cret():
     with open(path, "w") as f:
         f.write(f"amount = {amount}\npassword = \"{password}\"")
 
+    Record(name, amount, "Opened Account")
+
     BackToLog()
     Notif("Account Created!", 6)
 
@@ -134,6 +143,10 @@ def Depo():
         
         with open(f"USERS/user_{Name}.py", "w") as f:
             f.write(f"amount = {curAmount}\npassword = \"{userPass}\"")
+
+        Record(Name, curAmount, "Deposit")
+
+        
 
         UpdateCurDisplay(curAmount)
 
@@ -167,16 +180,32 @@ def Withdraw():
 
         if (curAmount - int(amount)) >= 0:
             curAmount -= int(amount)
+
+            with open(f"USERS/user_{Name}.py", "w") as f:
+                f.write(f"amount = {curAmount}\npassword = \"{userPass}\"")
+
+            Record(Name, curAmount, "Withdraw")
+
+
         else:
             ErrorStable("Insufficient Funds.")
-        
-        with open(f"USERS/user_{Name}.py", "w") as f:
-            f.write(f"amount = {curAmount}\npassword = \"{userPass}\"")
+
 
         UpdateCurDisplay(curAmount)
 
     except ValueError:
         ErrorStable("Needs to be valid number/amount.")
+
+
+
+
+def Record(name, amount, type):
+
+    with open(f"UserRecords/user_record_{name}.txt", "a") as rec:
+        now = datetime.datetime.now()
+        rec.write(f"{type} ~ {amount} ~ {now}\n")
+
+
 
 
 def LogCheck():
@@ -364,6 +393,9 @@ def Main(user, amount):
 
     Back = Button(Container, text="Logout", command=BackToLog)
     Back.grid(row=5)
+
+    Records = Button(Container, text="History")
+    Records.grid(row=5, column=1, sticky="e")
 
 
     head = Label(win, text=f"Welcome back, {Name}!", padx=193, bg=headerColor, fg="white", font=("Times", 20, "italic"), pady=10)
