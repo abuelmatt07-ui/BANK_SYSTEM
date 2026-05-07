@@ -122,6 +122,10 @@ def Depo():
     try:
         Err.destroy()
 
+        if amount == "":
+            ErrorStable("Please Enter Amount.")
+            return
+
         if int(amount) < 0:
             ErrorStable("Positive numbers only.")
             return
@@ -153,6 +157,9 @@ def Withdraw():
 
     try:
         Err.destroy()
+        if amount == "":
+            ErrorStable("Please Enter Amount.")
+            return
 
         if int(amount) < 0:
             ErrorStable("Positive numbers only.")
