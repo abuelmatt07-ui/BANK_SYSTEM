@@ -24,9 +24,12 @@ Column = 500 # COLUMN/MENU WIDTH
 
 
 #WINDOW FUNCTIONS --------------------------------------------------------
-def Exit(event): # MAKES ESC AN ALTERNATIVE CLOSE FOR WINDOW
-    win.destroy()
-win.bind("<Escape>", Exit)
+def Exit(i): # MAKES ESC AN ALTERNATIVE CLOSE FOR WINDOW OR RETURNING TO LOGIN
+    if i == 0:
+        win.destroy()
+    else:
+        BackToLog()
+
 
 
 
@@ -324,6 +327,7 @@ def Register(): # REGISTER PAGE ================================================
 
     win.columnconfigure(1, weight=1)
     win.rowconfigure(1, weight=1)
+    win.bind("<Escape>", lambda event: Exit(1))
 
     global UserNameIn
     global UserPassIn
@@ -378,6 +382,7 @@ def Log(): # LOGIN PAGE ========================================================
 
     win.columnconfigure(1, weight=1)
     win.rowconfigure(1, weight=1)
+    win.bind("<Escape>", lambda event: Exit(0))
 
     global UserNameIn
     global UserPassIn 
@@ -430,6 +435,7 @@ def Log(): # LOGIN PAGE ========================================================
 def Main(user, amount): # MAIN MENU PAGE ====================================================================================================================================================================================
 
     win.columnconfigure(1, weight=1)
+    win.bind("<Escape>", lambda event: Exit(1))
 
     global Column
 
