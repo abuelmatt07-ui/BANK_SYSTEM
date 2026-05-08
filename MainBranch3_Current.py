@@ -12,6 +12,7 @@ win.attributes("-topmost", True)
 
 win.config(bg="#44444E")
 headerColor = "#37353E"
+Column = 500
 
 
 
@@ -110,7 +111,7 @@ def Cret():
     with open(path, "w") as f:
         f.write(f"amount = {amount}\npassword = \"{password}\"")
 
-    Record(name, amount, "Opened Account")
+    Record(name, amount, amount, "Opened Account")
 
     BackToLog()
     Notif("Account Created!", 6)
@@ -144,7 +145,7 @@ def Depo():
         with open(f"USERS/user_{Name}.py", "w") as f:
             f.write(f"amount = {curAmount}\npassword = \"{userPass}\"")
 
-        Record(Name, curAmount, "Deposit")
+        Record(Name, amount, curAmount, "Deposit")
 
         
 
@@ -184,7 +185,7 @@ def Withdraw():
             with open(f"USERS/user_{Name}.py", "w") as f:
                 f.write(f"amount = {curAmount}\npassword = \"{userPass}\"")
 
-            Record(Name, curAmount, "Withdraw")
+            Record(Name, amount, curAmount, "Withdraw")
 
 
         else:
@@ -199,11 +200,11 @@ def Withdraw():
 
 
 
-def Record(name, amount, type):
+def Record(name, amount, total, type):
 
     with open(f"UserRecords/user_record_{name}.txt", "a") as rec:
         now = datetime.datetime.now()
-        rec.write(f"{type} ~ {amount} ~ {now}\n")
+        rec.write(f"{type} ~ {amount} ~ {total} ~ {now}\n")
 
 
 
@@ -243,6 +244,57 @@ def BackToLog():
     Log()
 
 
+Toggle = 0
+def ShowRecords():
+    global Name
+    global Toggle
+    global ContFrame
+    global Cont
+
+    global Records
+
+    if Toggle == 0:
+        Toggle = 1
+
+        try:
+            with open(f"UserRecords/user_record_{Name}.txt", "r") as File:
+                pass
+        except FileNotFoundError:
+            ErrorStable("No Records Found.")
+            return
+            
+
+        Records.config(text="Hide")
+
+        ContFrame = Frame(Container, bg="#1e1e1e", pady=20)
+        ContFrame.grid(columnspan=2, sticky="ew")
+        ContFrame.columnconfigure(0, weight=1)
+
+        Cont = Listbox(ContFrame, highlightthickness=2, highlightbackground="grey")
+        Cont.grid(columnspan=2, sticky="ew")
+
+        with open(f"UserRecords/user_record_{Name}.txt", "r") as File:
+            
+            for count, lines in enumerate(File, start=1):
+                Type, Request, Total, Time = lines.split(" ~ ")
+                if Type == "Deposit" or Type == "Opened Account":
+                    Arrow = "<"
+                elif Type == "Withdraw":
+                    Arrow = ">"
+                else:
+                    Arrow = "?"
+
+                Cont.insert("end", f"TX #{count:>3} | {Type:^15} {Arrow}    {f"{Request}$":<9}-- TOTAL: {f'{Total}$':<9} | TIME: {Time}")
+
+                # | TOTAL: {f'{Total}$':>9} | TIME: {Time:>40}"
+    
+    else:
+        ContFrame.destroy()
+        Cont.destroy()
+        Records.config(text="History")
+        Toggle = 0
+
+
 
 
 
@@ -264,6 +316,7 @@ def Register():
     global UserNameIn
     global UserPassIn
     global Amount
+    global Column
 
     global headerColor
 
@@ -271,9 +324,10 @@ def Register():
 
 
     global Container
-    Container = Frame(bg="#1e1e1e", pady=20, padx=50)
+    Container = Frame(bg="#1e1e1e", pady=20, padx=50, width=Column)
     Container.grid(row=1, column=1, sticky="ns")
     Container.columnconfigure(1, weight=1)
+    Container.grid_propagate(False)
 
 
     Err = Label(Container)
@@ -322,12 +376,14 @@ def Log():
     global UserPassIn 
 
     global headerColor
+    global Column
 
 
     global Container
-    Container = Frame(bg="#1e1e1e", pady=20, padx=50)
+    Container = Frame(bg="#1e1e1e", pady=20, padx=50, width=Column)
     Container.grid(row=1, column=1, sticky="ns")
     Container.columnconfigure(1, weight=1)
+    Container.grid_propagate(False)
 
 
     Err = Label(Container)
@@ -367,10 +423,13 @@ def Main(user, amount):
 
     win.columnconfigure(1, weight=1)
 
+    global Column
+
     global Container
-    Container = Frame(bg="#1e1e1e", pady=20, padx=50)
+    Container = Frame(bg="#1e1e1e", pady=20, padx=50, width=Column)
     Container.grid(row=1, column=1, sticky="ns")
     Container.columnconfigure(1, weight=1)
+    Container.grid_propagate(False)
 
 
     global currentDisplay
@@ -384,6 +443,13 @@ def Main(user, amount):
     global Err
     global Name
 
+    global Records
+    global ContFrame
+    global Cont
+
+    ContFrame = Frame()
+    Cont = Listbox()
+
     global headerColor
  
 
@@ -394,7 +460,7 @@ def Main(user, amount):
     Back = Button(Container, text="Logout", command=BackToLog)
     Back.grid(row=5)
 
-    Records = Button(Container, text="History")
+    Records = Button(Container, text="History", command=ShowRecords)
     Records.grid(row=5, column=1, sticky="e")
 
 
