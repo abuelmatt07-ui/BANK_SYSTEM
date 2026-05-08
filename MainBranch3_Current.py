@@ -8,7 +8,7 @@ import datetime
 win = Tk()
 win.title("Bank")
 win.geometry("500x400")
-win.attributes("-topmost", True)
+win.attributes("-topmost", True) # MAKES WINDOW APPEAR ON THE TOP WHEN RAN
 
 
 
@@ -75,11 +75,21 @@ def AccessAccount(Name): # GETS PASSWORD AND AMMOUNT INSIDE THE LOC(LOCATION) TH
 
     return curAmount, userPass
 
+def Record(name, amount, total, type): # SAVES THE TRANSACTION ON THE USERS TXT FILE
+    with open(f"UserRecords/user_record_{name}.txt", "a") as rec:
+        now = datetime.datetime.now()
+        rec.write(f"{type} ~ {amount} ~ {total} ~ {now}\n")
 
 
-#PAGE FUNCTIONS --------------------------------------------
+def BackToLog(): # CLEANS THE WINDOW AND OPENS LOGIN PAGE
+    ClearWin()
+    Log()
 
-def Cret(): # CREATING A USER ACCOUNT
+
+
+#PAGE FUNCTIONS ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+def Cret(): # CREATING A USER ACCOUNT ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     global Err
     global Amount
 
@@ -139,7 +149,7 @@ def Cret(): # CREATING A USER ACCOUNT
 
 
 
-def Depo(): # DEPOSIT INTO ACCOUNT
+def Depo(): # DEPOSIT INTO ACCOUNT ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     global Err
     amount = GetIn()
     
@@ -170,7 +180,7 @@ def Depo(): # DEPOSIT INTO ACCOUNT
         ErrorStable("Needs to be valid number/amount.")
 
 
-def Withdraw():
+def Withdraw(): # WITHDRAW FROM ACCOUNT -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     global Err
     global Name
     amount = GetIn()
@@ -209,16 +219,7 @@ def Withdraw():
 
 
 
-def Record(name, amount, total, type):
-
-    with open(f"UserRecords/user_record_{name}.txt", "a") as rec:
-        now = datetime.datetime.now()
-        rec.write(f"{type} ~ {amount} ~ {total} ~ {now}\n")
-
-
-
-
-def LogCheck():
+def LogCheck(): # CHECKS IF ENTRY BY USER IS VALID ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     global UserPassIn
     global UserNameIn
     global Err
@@ -249,13 +250,12 @@ def LogCheck():
         ErrorStable("Please Check Username.", 6)
 
 
-def BackToLog():
-    ClearWin()
-    Log()
 
 
-Toggle = 0
-def ShowRecords():
+
+Toggle = 0 # TOOGLE SWITCH
+
+def ShowRecords(): # DISPLAYS USER'S TRANSACTIONS (USED IN MAIN PAGE) ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     global Name
     global Toggle
     global ContFrame
@@ -263,8 +263,10 @@ def ShowRecords():
 
     global Records
 
-    if Toggle == 0:
-        Toggle = 1
+    # (1) WHEN THE SYSTEM FIRST RUNS, THE STARTS AS OFF. BUT WHEN THE FUNCTION IS CALLED -
+
+    if Toggle == 0: # (2) IT CHECKS IF IT IS OFF, IF IT IS OFF IT THE LINES BELOW RUN AND -
+        Toggle = 1 # (3) IT ENABLES THE TOGGLE
 
         try:
             with open(f"UserRecords/user_record_{Name}.txt", "r") as File:
@@ -296,7 +298,7 @@ def ShowRecords():
 
                 Cont.insert("end", f"TX #{count:>3} | {Type:^15} {Arrow}    {f"{Request}$":<9}-- TOTAL: {f'{Total}$':<9} | TIME: {Time}")
     
-    else:
+    else: # BUT IF THE TOGGLE IS ALREADY ON, IT DELETES THE DISPLAY/BOX AND TURNS THE TOGGLE BACK OFF
         ContFrame.destroy()
         Cont.destroy()
         Records.config(text="History")
@@ -311,7 +313,7 @@ def ShowRecords():
 
 
 
-#PAGES ------------------------------------------------------------------------------------------------------
+#PAGES ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 # HOW THEY WORK IS THAT EACH FUNCTION/PAGE, WHEN CALLED WILL OPEN THE INDIVIDUAL PAGES. WHEN REGISTER FUNCTION IS CALLED, THE REGISTER PAGE SHOWS UP.
 
@@ -407,8 +409,8 @@ def Log(): # LOGIN PAGE ========================================================
     UserPassIn.grid(row=3, column=1, sticky="ew")
 
     EnterBut = Button(Container, text="Login", command=LogCheck)
-    win.bind("<Return>", lambda event: LogCheck())
     EnterBut.grid(row=4, column=0, columnspan=2, sticky="ew")
+    win.bind("<Return>", lambda event: LogCheck())
 
     UserNameIn.focus_set()
 
