@@ -39,7 +39,7 @@ def UpdateCurDisplay(newDisplay):
 
     Current.config(text=f"Current: {newDisplay}$")
 
-def ErrorStable(error, position = 6):
+def ErrorStable(error, position = 10):
     global Err
     global Container
 
