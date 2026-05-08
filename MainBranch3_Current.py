@@ -84,7 +84,7 @@ def Cret():
     
     for char in invalidChars:
         if char in name:
-            ErrorStable("Numbers & Letters\nfor Username Only.", 6)
+            ErrorStable("Numbers & Letters for Username Only.", 6)
             return
         
     if " " in name:
