@@ -1,2 +1,2 @@
-amount = 0
-password = "admin123"
+amount = 100
+password = "123"

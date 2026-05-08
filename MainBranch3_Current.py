@@ -230,6 +230,7 @@ def LogCheck():
         Err.destroy()
 
         if PassInCompare == getPass:
+            importlib.reload(userAccount)
             AccountCurrentAmmount = getattr(userAccount, "amount")
             ClearWin()
             Main(name, AccountCurrentAmmount)
