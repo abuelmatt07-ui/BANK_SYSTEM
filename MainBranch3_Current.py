@@ -10,9 +10,12 @@ win.title("Bank")
 win.geometry("500x400")
 win.attributes("-topmost", True)
 
-win.config(bg="#44444E")
-headerColor = "#37353E"
-Column = 500
+
+
+
+win.config(bg="#44444E") # CONTROLS BACKGROUND COLOR
+headerColor = "#37353E" # CONTROLS HEADER COLOR
+Column = 500 # COLUMN/MENU WIDTH
 
 
 
@@ -21,11 +24,13 @@ Column = 500
 
 
 #WINDOW FUNCTIONS --------------------------------------------------------
-def Exit(event):
+def Exit(event): # MAKES ESC AN ALTERNATIVE CLOSE FOR WINDOW
     win.destroy()
 win.bind("<Escape>", Exit)
 
-def ClearWin():
+
+
+def ClearWin(): # CLEARS WINDOW. USED FOR PAGE TRANSITIONS(LOGIN PAGE TO MAIN MENU PAGE)
    for widget in win.winfo_children():
     widget.destroy()
 
@@ -33,49 +38,60 @@ def ClearWin():
 
 #FRONT-END FUNCTIONS ------------------------------------------
 
-
-def UpdateCurDisplay(newDisplay):
+def UpdateCurDisplay(newDisplay): # FORCE UPDATES CURRENT IN MAIN MENU
     global currentDisplay
-
     Current.config(text=f"Current: {newDisplay}$")
 
-def ErrorStable(error, position = 10):
+
+
+def ErrorStable(error, position = 10): # USED AS A TEMPLATE FOR USER INPUT ERROR (POSITION IS FOR ROW OF THE LABEL)
     global Err
     global Container
-
     Err.destroy()
     Err = Label(Container, text=f"Invalid: {error}", fg="Red", bg="#1e1e1e")
     Err.grid(row=position, column=0, columnspan=10, sticky="ew")
 
-def Notif(text, position = 6):
+
+
+
+def Notif(text, position = 6): # SAME AS EERORSTABLE BUT GREEN
     global Err
     global Container
-
     Err = Label(Container, text=f"{text}", fg="#72BAA9", bg="#1e1e1e")
     Err.grid(row=position, column=0, columnspan=10, sticky="ew")
 
+#BACK-END FUNCTIONS ---------------------------------------
 
-
-#BACK-END FUNCTIONS --------------------------------------------
-
-def GetIn():
+def GetIn(): # GETS THE INPUT FROM THE AMOUNT ENTRY AND RETURNS IT FOR STORING OF VARIABLE
     global Amount
     return Amount.get()
 
-def Cret():
+def AccessAccount(Name): # GETS PASSWORD AND AMMOUNT INSIDE THE LOC(LOCATION) THAT HAS THE USERNAME
+    loc = f"USERS.user_{Name}"
+    userAcc = importlib.import_module(loc)
+    importlib.reload(userAcc)
+    curAmount = getattr(userAcc, "amount")
+    userPass = getattr(userAcc, "password")
 
+    return curAmount, userPass
+
+
+
+#PAGE FUNCTIONS --------------------------------------------
+
+def Cret(): # CREATING A USER ACCOUNT
     global Err
+    global Amount
 
     Err = Label(Container)
 
-
+    # INVALID CHARACTERS/STRINGS FOR USER INPUT - RELATED TO USER NAMES DUE TO POSSIBLE SYNTAX ERRORS FOR FILE NAMES (EX. NAME.NAME.PY)
     invalidChars = ['!', '@', '#', '$', '%', '^', '&', '*', '(', ')', 
                     '-', '+', '=', '{', '}', '[', ']', '|', '\\', ':', 
                     ';', '"', "'", '<', '>', ',', '.', '?', '/', '`', '~', '_']
-
+    
     name = UserNameIn.get().strip()
-    password = UserPassIn.get()
-    global Amount 
+    password = UserPassIn.get().strip()
     amount = Amount.get().strip()
 
     if not name or not password or not amount:
@@ -83,50 +99,51 @@ def Cret():
         return
     
     for char in invalidChars:
-        if char in name:
+        if char in name: # CHECKS IF CHAR FROM INVALID CHARACTERS IS IN NAME
             ErrorStable("Numbers & Letters for Username Only.", 6)
             return
         
     if " " in name:
         ErrorStable("No Space on Username Allowed.", 6)
         return
-
+    
     try:
         amount = int(amount)
+        if amount < 0:
+            ErrorStable("Cannot be negative.", 6)
+            return
     except ValueError:
         ErrorStable("Amount must be number.", 6)
         return
 
-    if amount < 0:
-        ErrorStable("Cannot be negative.", 6)
-        return
 
-    os.makedirs("USERS", exist_ok=True)
 
-    path = f"USERS/user_{name}.py"
-    if os.path.exists(path):
-        ErrorStable("User already exists.", 6)
+    os.makedirs("USERS", exist_ok=True) # CHECKS IF USERS FOLDER EXISTS AND CREATES ONE IF NOT
+
+
+
+    path = f"USERS/user_{name}.py" # MAKES A POINTER FOR USERNAMED FILE
+
+
+    if os.path.exists(path): # CHECKS IF USER WITH SAME NAME ALREADY EXISTS
+        ErrorStable("Username already taken.", 6)
         return
 
     with open(path, "w") as f:
         f.write(f"amount = {amount}\npassword = \"{password}\"")
 
-    Record(name, amount, amount, "Opened Account")
 
+    Record(name, amount, amount, "Opened Account") # DOUBLE AMOUNT BECAUSE ACCOUNT IS ONLY CREATED. NO DEPOSIT MADE OR WITHDRAW
     BackToLog()
     Notif("Account Created!", 6)
 
-def Depo():
+
+
+def Depo(): # DEPOSIT INTO ACCOUNT
     global Err
     amount = GetIn()
     
-
-    loc = f"USERS.user_{Name}"
-    userAcc = importlib.import_module(loc)
-    importlib.reload(userAcc)
-    curAmount = getattr(userAcc, "amount")
-    userPass = getattr(userAcc, "password")
-
+    curAmount, userPass = AccessAccount(Name)
 
 
     try:
@@ -145,10 +162,8 @@ def Depo():
         with open(f"USERS/user_{Name}.py", "w") as f:
             f.write(f"amount = {curAmount}\npassword = \"{userPass}\"")
 
+
         Record(Name, amount, curAmount, "Deposit")
-
-        
-
         UpdateCurDisplay(curAmount)
 
     except ValueError:
@@ -160,14 +175,8 @@ def Withdraw():
     global Name
     amount = GetIn()
 
-    
+    curAmount, userPass = AccessAccount(Name)
 
-
-    loc = f"USERS.user_{Name}"
-    userAcc = importlib.import_module(loc)
-    importlib.reload(userAcc)
-    curAmount = getattr(userAcc, "amount")
-    userPass = getattr(userAcc, "password")
 
     try:
         Err.destroy()
@@ -286,8 +295,6 @@ def ShowRecords():
                     Arrow = "?"
 
                 Cont.insert("end", f"TX #{count:>3} | {Type:^15} {Arrow}    {f"{Request}$":<9}-- TOTAL: {f'{Total}$':<9} | TIME: {Time}")
-
-                # | TOTAL: {f'{Total}$':>9} | TIME: {Time:>40}"
     
     else:
         ContFrame.destroy()
@@ -306,8 +313,10 @@ def ShowRecords():
 
 #PAGES ------------------------------------------------------------------------------------------------------
 
+# HOW THEY WORK IS THAT EACH FUNCTION/PAGE, WHEN CALLED WILL OPEN THE INDIVIDUAL PAGES. WHEN REGISTER FUNCTION IS CALLED, THE REGISTER PAGE SHOWS UP.
 
-def Register():
+
+def Register(): # REGISTER PAGE ====================================================================================================================================================================================
 
     ClearWin()
 
@@ -321,7 +330,6 @@ def Register():
 
     global headerColor
 
-    
 
 
     global Container
@@ -364,11 +372,7 @@ def Register():
 
 
 
-
-
-
-
-def Log():
+def Log(): # LOGIN PAGE ====================================================================================================================================================================================
 
     win.columnconfigure(1, weight=1)
     win.rowconfigure(1, weight=1)
@@ -420,7 +424,7 @@ def Log():
 
 
 
-def Main(user, amount):
+def Main(user, amount): # MAIN MENU PAGE ====================================================================================================================================================================================
 
     win.columnconfigure(1, weight=1)
 
@@ -488,32 +492,9 @@ def Main(user, amount):
     Amount.focus_set()
 
 
-
-
-
-
 #SYSTEM STARTS ----------------------------------------------------------------------***********
 
-
-
-Log()
-
-
-
-
-
-
-
-
-
-
-            
-
+Log() # IT ALL STARTS FROM THIS FUNCTION
 
 
 win.mainloop()
-
-
-
-
-
