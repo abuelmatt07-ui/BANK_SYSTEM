@@ -406,7 +406,8 @@ def Log(): # LOGIN PAGE ========================================================
     UserPassIn = Entry(Container, highlightthickness=2, highlightbackground="grey", bg="#1e1e1e", fg="white", show="*")
     UserPassIn.grid(row=3, column=1, sticky="ew")
 
-    EnterBut = Button(Container, text="Login", command=LogCheck)   
+    EnterBut = Button(Container, text="Login", command=LogCheck)
+    win.bind("<Return>", lambda event: LogCheck())
     EnterBut.grid(row=4, column=0, columnspan=2, sticky="ew")
 
     UserNameIn.focus_set()
@@ -475,7 +476,7 @@ def Main(user, amount): # MAIN MENU PAGE =======================================
     tex2 = Label(Container, text="Amount:", bg="#1e1e1e", fg="white")
     tex2.grid(row=1, column=0, sticky="ew")
 
-    Amount = Entry(Container, highlightthickness=2, highlightbackground="grey", bg="#1e1e1e")
+    Amount = Entry(Container, highlightthickness=2, highlightbackground="grey", bg="#1e1e1e", fg="white")
     Amount.grid(row=1, column=1, sticky="ew")
 
     Dep = Button(Container, text="Deposit", command=Depo)
